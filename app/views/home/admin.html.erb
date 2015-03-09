@@ -1,0 +1,61 @@
+
+        <br>
+        <br>
+        <br>
+        <br>
+
+<% hash_value =  %w[일반외과(2주) 영상의학(2주) 정형외과(2주) 안과(2주) 임상병리(2주) 내과I(2주) 내과II(2주) 피부과(2주) 야생동물(2주) 마취(2주) 대동물(1주) 산과(1주)  외부실습I(2주) 외부실습II(2주) 외부실습III(2주) 외부실습IV(2주) 외부실습V(2주) 1학기방학I(1주) 1학기방학II(1주) 1학기방학III(1주) 2학기방학I(1주) 자기개발(2주)] %>
+<% major_hash = Hash.new%>
+<% 1.upto(22) do |i|%>
+<%   major_hash["major#{i}"] = hash_value[i-1] %>
+<% end %>
+
+<%@users.each do |x|%>
+<div class = "each_user">
+  <div class = "lt each_week" style="background:#fff; color:#333;">
+    <%if x.userweeks.count != 38%>
+      <span style="color:red"><%=x.name%></span><br>
+      <span style="color:red">미입력 주간 개수 : <%=38 - x.userweeks.count%></span>
+    <%else%>
+      <%=x.name%><br>
+    <%end%>
+  </div>
+  <% 1.upto(39) do |i|%>
+    <%if !x.userweeks.where(:week_id => i).last.nil?%>
+      <div class = "lt each_week">
+        <%=x.name%>의 <%=i%>번째 주 <br>
+        <%=major_hash[x.userweeks.where(:week_id => i).last.major_id] %>
+      </div>
+    <%elsif i == 18%>
+      <div class = "lt each_week" style="background:#c1cdcc">
+        <%=x.name%>의 <%=i%>번째 주 <br>
+        졸업여행
+      </div>
+
+    <%else%>
+      <div class = "lt each_week" style="background:#fff; color:#333;">
+        <%=x.name%>의 <%=i%>번째 주 <br>
+      </div>
+    <%end%>
+  <%end%>
+  <div style="clear:both">
+  </div>
+</div>
+<%end%>
+
+<style>
+div.each_user{
+    position:relative;
+    width:6000px;
+    height:auto;
+}
+div.lt{
+  float:left;
+}
+div.each_week{
+  width:150px;
+  height:50px;
+  border:1px solid;
+}
+
+</style>

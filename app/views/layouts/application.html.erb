@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<html>
+<head>
+  <title>BuckingHam</title>
+  <%= stylesheet_link_tag    "application", :media => "all" %>
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tags %>
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+
+  <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+  <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap-theme.min.css">
+  <link href="http://getbootstrap.com/examples/cover/cover.css" rel="stylesheet">
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+
+
+
+  <div class="site-wrapper">
+
+    <div class="site-wrapper-inner">
+
+      <div class="cover-container">
+
+        <div class="masthead clearfix">
+          <div class="inner">
+            <h3 class="masthead-brand">BUCKINGHAM</h3>
+            <ul class="nav masthead-nav">
+              <li id="up-menu"><a href="/home/timeschedule">SuperWeeks</a></li>
+              <li id="up-menu"><a href="/home/admin"><sup style="font-style:italic; color:#00ffff; font-size:8px;">New</sup>Map</a> </li>
+              <li id="up-menu"><a href="/home/preview"><sup style="font-style:italic; color:#00ffff; font-size:8px;">New</sup>Preview</a> </li>
+              <li id="up-menu"><a href="/home/logout"><sup style="font-style:italic; color:#00ffff; font-size:8px;">New</sup>Logout</a> </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="inner cover">
+          <%= yield %>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Bootstrap core JavaScript
+  ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script src="../../dist/js/bootstrap.min.js"></script>
+  <script src="../../assets/js/docs.min.js"></script>
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+
+
+
+</body>
+</html>

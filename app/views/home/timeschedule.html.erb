@@ -1,0 +1,365 @@
+
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+<script>
+alert("예비 실습신청 등록 아직 안된분들 등록해주세요~!")
+a = ""
+<%@users.each do |x|%>
+  <% if x.userweeks.count != 38 %>
+    a += "<%=x.name%>(<%=38 - x.userweeks.count%>), " 
+  <%end%>
+<%end%>
+alert(a)
+
+</script>
+<% hash_value =  %w[일반외과(2주) 영상의학(2주) 정형외과(2주) 안과(2주) 임상병리(2주) 내과I(2주) 내과II(2주) 피부과(2주) 야생동물(2주) 마취(2주) 대동물(1주) 산과(1주)  외부실습I(2주) 외부실습II(2주) 외부실습III(2주) 외부실습IV(2주) 외부실습V(2주) 1학기방학I(1주) 1학기방학II(1주) 1학기방학III(1주) 2학기방학I(1주) 자기개발(2주)] %>
+<% major_hash = Hash.new%>
+<% 1.upto(22) do |i|%>
+<%   major_hash["major#{i}"] = hash_value[i-1] %>
+<% end %>
+
+<script>
+username= "<%=session[:name]%>"
+</script>
+<script src ="/js/timeschedule.js"></script>
+<%start = Date.parse('2014-12-29')%>
+<%last = Date.parse('2015-1-2')%>
+<% 1.upto(39) do |x|%>
+  <% if x!=18%>
+    <% if x== 15 or x==17 or x==21 or x==22 or x==25 or x==26%>
+
+      <%if @user.userweeks.where(:week_id => x).last.nil?%>
+        <div class = "each_week large_animal" order="<%=x%>">
+      <%else%>
+        <% if @user.userweeks.where(:week_id => x).last.type_id == 1%>
+          <div class = "each_week active" id="<%=@user.userweeks.where(:week_id => x).last.major_id%>" select="true" first="true" order="<%=x%>" temp = "1">
+        <% elsif @user.userweeks.where(:week_id => x).last.type_id == 2 %>
+          <div class = "each_week active" id="<%=@user.userweeks.where(:week_id => x).last.major_id%>" select="true" second="true" order="<%=x%>" temp="2">
+        <% elsif @user.userweeks.where(:week_id => x).last.type_id == 0 %>
+          <div class = "each_week active" id="<%=@user.userweeks.where(:week_id => x).last.major_id%>" select="true" order="<%=x%>" temp="0">
+        <%end%>
+      <%end%>
+      <p class = "week"> <%=x%>주차<br>
+      <span class ="large_animal">대동물실습가능주간</span><br>
+              <%=start%> ~ <%=last%></p>
+      <li class="dropdown">
+      <%if @user.userweeks.where(:week_id => x).last.nil?%>
+        <a href="#" class="dropdown-toggle button" data-toggle="dropdown" aria-expanded="false">일정선택<span class="caret"></span></a>
+      <%else%>
+        <%if @user.userweeks.where(:week_id => x).last.is_haemaru == false%>
+        <a href="#" class="dropdown-toggle button" data-toggle="dropdown" aria-expanded="false"><%=major_hash[@user.userweeks.where(:week_id => x).last.major_id]%><span class="caret"></span></a>
+        <%else%>
+          <a href="#" class="dropdown-toggle button" data-toggle="dropdown" aria-expanded="false">해마루 외부실습<span class="caret"></span></a>
+        <%end%>
+        <script> 
+          $(document).ready( function() {
+              $("." + "<%=@user.userweeks.where(:week_id => x).last.major_id%>").css("display","none")
+          });
+        </script>
+      <%end%>
+        <ul class="dropdown-menu" role="menu">
+          <li class = "major1" size=2 id="major1" ><a href="#">일반외과(2주)</a></li>
+          <li class = "major2" size=2 id="major2" ><a href="#">영상의학(2주)</a></li>
+          <li class = "major3" size=2 id="major3" ><a href="#">정형외과(2주)</a></li>
+          <li class = "major4" size=2 id="major4"><a href="#">안과(2주)</a></li>
+          <li class = "major5" size=2 id="major5"><a href="#">임상병리(2주)</a></li>
+          <li class = "major6" size=2 id="major6"><a href="#">내과I(2주)</a></li>
+          <li class = "major7" size=2 id="major7"><a href="#">내과II(2주)</a></li>
+          <li class = "major8" size=2 id="major8"><a href="#">피부과(2주)</a></li>
+          <li class = "major9" size=2 id="major9"><a href="#">야생동물(2주)</a></li>
+          <li class = "major10" size=2 id="major10"><a href="#">마취(2주)</a></li>
+          <li class = "major11" id="major11"><a href="#">대동물(1주)</a></li>
+          <li class = "major12" id="major12"><a href="#">산과(1주)</a></li>
+          <li class="divider"></li>
+          <li class = "major13" size=2 id="major13"><a href="#">외부실습I(2주)</a></li>
+          <li class = "major14" size=2 id="major14"><a href="#">외부실습II(2주)</a></li>
+          <li class = "major15" size=2 id="major15"><a href="#">외부실습III(2주)</a></li>
+          <li class = "major16" size=2 id="major16"><a href="#">외부실습IV(2주)</a></li>
+          <li class = "major17" size=2 id="major17"><a href="#">외부실습V(2주)</a></li>
+          <li class="divider"></li>
+          <%if x <= 26 %>
+          <li class = "major18" id="major18"><a href="#">1학기방학I(1주)</a></li>
+          <li class = "major19" id="major19"><a href="#">1학기방학II(1주)</a></li>
+          <li class = "major20" id="major20"><a href="#">1학기방학III(1주)</a></li>
+          <%elsif x > 26%>
+          <li class = "major21" id="major21"><a href="#">2학기방학(1주)</a></li>
+          <%end%>
+          <li class = "major22" size=2 id="major22"><a href="#">자기개발(2주)</a></li>
+        </ul>
+      </li>
+
+
+      <% if !@user.userweeks.where(:week_id => x).last.nil?  %>
+        <% if @user.userweeks.where(:week_id => x).last.major_id == "major6" or @user.userweeks.where(:week_id => x).last.major_id == "major7"%>
+
+          <div class = "classmate_box" style="display:initial;">
+          <% if Userweek.where(:week_id => x).where(:major_id => "major6").count.to_i + Userweek.where(:week_id => x).where(:major_id => "major7").count.to_i > @restriction_hash["major6"]%>
+            <div style="background:red;">
+              신청인원이 초과되었습니다. 합의가 필요합니다<br> 제한인원 : 6 <br>
+          <%else%>
+            <div>
+          <%end%>
+              동시 수강생 목록<br>
+              총 <span id="classmate_number"><%=Userweek.where(:week_id => x).where(:major_id => "major6").count.to_i + Userweek.where(:week_id => x).where(:major_id => "major7").count.to_i %></span>명 <br>
+            </div>
+            <div id="classmate_list">
+              <%   Userweek.where(:week_id => x).where(:major_id => "major6").each do |uw| %>
+                <%=uw.user.name%> /
+              <%end%>
+              <%   Userweek.where(:week_id => x).where(:major_id => "major7").each do |uw| %>
+                <%=uw.user.name%> /
+              <%end%>
+
+            </div>
+          </div>
+        <% elsif @user.userweeks.where(:week_id => x).last.is_haemaru == true%>
+          <div class = "classmate_box" style="display:initial;">
+          <%if Userweek.where(:week_id => x).where(:is_haemaru => true).count > 3%>
+            <div style="red">
+              신청인원이 초과되었습니다 합의가 필요합니다<br> 제한인원 : 3 <br>
+          <%else%>
+            <div>
+          <%end%>
+              동시 수강생 목록<br>
+              총 <span id="classmate_number"><%=Userweek.where(:week_id => x).where(:is_haemaru => true).count%></span>명 <br>
+            </div>
+            <div id="classmate_list">
+              <%   Userweek.where(:week_id => x).where(:is_haemaru => true).each do |uw| %>
+                <%=uw.user.name%> / 
+              <%end%>
+            </div>
+          </div>
+
+        <%else%>
+          <div class = "classmate_box" style="display:initial;">
+            <%if Userweek.where(:week_id => x).where(:major_id => @user.userweeks.where(:week_id => x).last.major_id).count > @restriction_hash[@user.userweeks.where(:week_id => x).last.major_id]%>
+            <div style="red">
+              신청인원이 초과되었습니다 합의가 필요합니다<br> 제한인원 : <%=@restriction_hash[@user.userweeks.where(:week_id => x).last.major_id]%> <br>
+          <%else%>
+            <div>
+          <%end%>
+              동시 수강생 목록<br>
+              총 <span id="classmate_number"><%=Userweek.where(:week_id => x).where(:major_id => @user.userweeks.where(:week_id => x).last.major_id).count%></span>명 <br>
+            </div>
+            <div id="classmate_list">
+              <%   Userweek.where(:week_id => x).where(:major_id => @user.userweeks.where(:week_id => x).last.major_id).each do |uw| %>
+                <%=uw.user.name%> /
+              <%end%>
+            </div>
+          </div>
+        <%end%>
+      <%else%>
+      <div class = "classmate_box">
+        <div>
+          동시 수강생 목록<br>
+          총 <span id="classmate_number">N</span>명 <br>
+        </div>
+        <div id="classmate_list">
+        </div>
+      </div>
+      <%end%>
+
+    </div>
+    <div class = "slide">
+    </div>
+
+    <%else%>
+      <%if @user.userweeks.where(:week_id => x).last.nil?%>
+      <%#이건 그 주에 일정이 없는경우 %>
+        <div class = "each_week" order="<%=x%>">
+      <%else%>
+      <%#이건 그 주에 일정이 있는경우 %>
+        <% if @user.userweeks.where(:week_id => x).last.type_id == 1%>
+          <div class = "each_week active" id="<%=@user.userweeks.where(:week_id => x).last.major_id%>" select="true" first="true" order="<%=x%>" temp = "1">
+        <% elsif @user.userweeks.where(:week_id => x).last.type_id == 2 %>
+          <div class = "each_week active" id="<%=@user.userweeks.where(:week_id => x).last.major_id%>" select="true" second="true" order="<%=x%>" temp="2">
+        <% elsif @user.userweeks.where(:week_id => x).last.type_id == 0 %>
+          <div class = "each_week active" id="<%=@user.userweeks.where(:week_id => x).last.major_id%>" select="true" order="<%=x%>" temp="0">
+        <%end%>
+
+      <%end%>
+      <p class = "week"> <%=x%>주차<br> <%=start%> ~ <%=last%></p>
+      <li class="dropdown">
+
+      <%if @user.userweeks.where(:week_id => x).last.nil?%>
+        <a href="#" class="dropdown-toggle button" data-toggle="dropdown" aria-expanded="false">일정선택<span class="caret"></span></a>
+      <%else%>
+        <% if @user.userweeks.where(:week_id =>x).last.is_haemaru == false%>
+        <a href="#" class="dropdown-toggle button" data-toggle="dropdown" aria-expanded="false"><%=major_hash[@user.userweeks.where(:week_id => x).last.major_id]%><span class="caret"></span></a>
+        <% else%>
+        <a href="#" class="dropdown-toggle button" data-toggle="dropdown" aria-expanded="false">해마루 외부실습<span class="caret"></span></a>
+        <%end%>
+        <script> 
+          $(document).ready( function() {
+              $("." + "<%=@user.userweeks.where(:week_id => x).last.major_id%>").css("display","none")
+          });
+        </script>
+      <%end%>
+
+      <ul class="dropdown-menu" role="menu">
+        <li class = "major1" size=2 id="major1" ><a href="#">일반외과(2주)</a></li>
+        <li class = "major2" size=2 id="major2" ><a href="#">영상의학(2주)</a></li>
+        <li class = "major3" size=2 id="major3" ><a href="#">정형외과(2주)</a></li>
+        <li class = "major4" size=2 id="major4"><a href="#">안과(2주)</a></li>
+        <li class = "major5" size=2 id="major5"><a href="#">임상병리(2주)</a></li>
+        <li class = "major6" size=2 id="major6"><a href="#">내과I(2주)</a></li>
+        <li class = "major7" size=2 id="major7"><a href="#">내과II(2주)</a></li>
+        <li class = "major8" size=2 id="major8"><a href="#">피부과(2주)</a></li>
+        <li class = "major9" size=2 id="major9"><a href="#">야생동물(2주)</a></li>
+        <li class = "major10" size=2 id="major10"><a href="#">마취(2주)</a></li>
+        <li class = "major12" id="major12"><a href="#">산과(1주)</a></li>
+        <li class="divider"></li>
+        <li class = "major13" size=2 id="major13"><a href="#">외부실습I(2주)</a></li>
+        <li class = "major14" size=2 id="major14"><a href="#">외부실습II(2주)</a></li>
+        <li class = "major15" size=2 id="major15"><a href="#">외부실습III(2주)</a></li>
+        <li class = "major16" size=2 id="major16"><a href="#">외부실습IV(2주)</a></li>
+        <li class = "major17" size=2 id="major17"><a href="#">외부실습V(2주)</a></li>
+        <li class="divider"></li>
+        <%if x <= 26 %>
+        <li class = "major18" id="major18"><a href="#">1학기방학I(1주)</a></li>
+        <li class = "major19" id="major19"><a href="#">1학기방학II(1주)</a></li>
+        <li class = "major20" id="major20"><a href="#">1학기방학III(1주)</a></li>
+        <%elsif x > 26%>
+        <li class = "major21" id="major21"><a href="#">2학기방학(1주)</a></li>
+        <%end%>
+        <li class = "major22" size=2 id="major22"><a href="#">자기개발(2주)</a></li>
+      </ul>
+      </li>
+      <% if !@user.userweeks.where(:week_id => x).last.nil?  %>
+        <% if @user.userweeks.where(:week_id => x).last.major_id == "major6" or @user.userweeks.where(:week_id => x).last.major_id == "major7"%>
+
+          <div class = "classmate_box" style="display:initial;">
+            <% if Userweek.where(:week_id => x).where(:major_id => "major6").count.to_i + Userweek.where(:week_id => x).where(:major_id => "major7").count.to_i > 6%>
+            <div style="background:red;">
+              신청인원이 초과되었습니다. 합의가 필요합니다 <br> 제한인원 : 6<br>
+          <%else%>
+            <div>
+          <%end%>
+              동시 수강생 목록<br>
+              총 <span id="classmate_number"><%=Userweek.where(:week_id => x).where(:major_id => "major6").count.to_i + Userweek.where(:week_id => x).where(:major_id => "major7").count.to_i %></span>명 <br>
+            </div>
+            <div id="classmate_list">
+              <%   Userweek.where(:week_id => x).where(:major_id => "major6").each do |uw| %>
+                <%=uw.user.name%> /
+              <%end%>
+              <%   Userweek.where(:week_id => x).where(:major_id => "major7").each do |uw| %>
+                <%=uw.user.name%> /
+              <%end%>
+
+            </div>
+          </div>
+
+        <% elsif @user.userweeks.where(:week_id => x).last.is_haemaru == true%>
+          <div class = "classmate_box" style="display:initial;">
+          <% if Userweek.where(:week_id => x).where(:is_haemaru => true).count > 3%>
+            <div style="background:red;">
+              신청인원이 초과되었습니다. 합의가 필요합니다<br> 제한인원 : 3<br>
+          <%else%>
+            <div>
+          <%end%>
+              동시 수강생 목록<br>
+              총 <span id="classmate_number"><%=Userweek.where(:week_id => x).where(:is_haemaru => true).count%></span>명 <br>
+            </div>
+            <div id="classmate_list">
+              <%   Userweek.where(:week_id => x).where(:is_haemaru => true).each do |uw| %>
+                <%=uw.user.name%> / 
+              <%end%>
+            </div>
+          </div>
+
+        <% else%>
+          <div class = "classmate_box" style="display:initial;">
+            <% puts  Userweek.where(:week_id => x).where(:major_id => @user.userweeks.where(:week_id => x).last.major_id).count %>
+            <% puts @restriction_hash[@user.userweeks.where(:week_id => x).last.major_id] %>
+          <% if Userweek.where(:week_id => x).where(:major_id => @user.userweeks.where(:week_id => x).last.major_id).count > @restriction_hash[@user.userweeks.where(:week_id => x).last.major_id] %>
+            <div style="background:red">
+              신청인원이 초과되었습니다. 합의가 필요합니다<br> 제한인원 : <%=@restriction_hash[@user.userweeks.where(:week_id => x).last.major_id]%><br>
+          <%else%>
+            <div>
+          <%end%>
+              동시 수강생 목록<br>
+              총 <span id="classmate_number"><%=Userweek.where(:week_id => x).where(:major_id => @user.userweeks.where(:week_id => x).last.major_id).count%></span>명 <br>
+            </div>
+            <div id="classmate_list">
+              <%   Userweek.where(:week_id => x).where(:major_id => @user.userweeks.where(:week_id => x).last.major_id).each do |uw| %>
+                <%=uw.user.name%> / 
+              <%end%>
+            </div>
+          </div>
+        <%end%>
+      <%else%>
+      <div class = "classmate_box">
+        <div>
+          동시 수강생 목록<br>
+          총 <span id="classmate_number">N</span>명 <br>
+        </div>
+        <div id="classmate_list">
+        </div>
+      </div>
+      <%end%>
+    </div>
+
+    <div class = "slide">
+    </div>
+    <%end%>
+  <%else%>
+    <div class = "each_week active" id="travel" order="<%=x%>">
+      <p class = "week"> <%=x%>주차<br> <%=start%> ~ <%=last%></p>
+      <li class="dropdown">
+        <a  class="dropdown-toggle">졸업여행주간(고정)</span></a>
+      </li>
+    </div>
+    <div class = "slide">
+    </div>
+
+  <%end%>
+  <%start+=7%>
+  <%last+=7%>
+<%end%>
+<style>
+div.classmate_box{
+  display:none;
+}
+.each_week{
+  background-color:#d1cdcc;
+  border-radius:5px;
+}
+div.large_animal{
+  background-color:#FF3300 !important;
+}
+.slide{
+  height:10px;
+  width:10px;
+}
+div.active{
+  background:#04538B;
+}
+ul.inactive{
+  display:none !important;
+}
+ul.active{
+  display:block !important;
+}
+a.button{
+  font: bold 30px Arial;
+  text-decoration: none;
+  background-color: #EEEEEE;
+  color: #333333;
+  padding: 2px 6px 2px 6px;
+  border-top: 1px solid #CCCCCC;
+  border-right: 1px solid #333333;
+  border-bottom: 1px solid #333333;
+  border-left: 1px solid #CCCCCC;
+  border-radius:10px;
+}
+div#classmate{
+  padding:10px;
+}
+li.dropdown{
+  list-style:none;
+}
+</style>
+

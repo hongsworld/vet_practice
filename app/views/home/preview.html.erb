@@ -1,0 +1,90 @@
+
+        <br>
+        <br>
+        <br>
+        <br>
+<%#coding:utf-8%>
+<%hash_value =  %w[일반외과(2주) 영상의학(2주) 정형외과(2주) 안과(2주) 임상병리(2주) 내과I(2주) 내과II(2주) 피부과(2주) 야생동물(2주) 외부실습III(2주) 외부실습IV(2주) 외부실습V(2주) 1학기방학I(1주) 1학기방학II(1주) 1학기방학III(1주) 2학기방학I(1주) 자기개발(2주)]%>
+
+
+<%overlab_array = [5,5,4,5,6,6,6,5,6,5,10,3,100,100,100,100,100,100,100,100,100,100,100,100,100,100]%>
+<%restriction_hash = Hash.new%>
+<%1.upto(25) do |n|%>
+  <%restriction_hash["major#{n}"] = overlab_array[n-1]%>
+<%end%>
+
+<%major_hash = Hash.new%>
+<%1.upto(22) do |i|%>
+  <%major_hash["major#{i}"] = hash_value[i-1]%>
+<%end%>
+
+
+
+<%User.all.each do |u|%>
+  <%overlab = 0%>
+  <%blank = 0%>
+  <%= "이름 : #{u.name}"%>
+  <Br>
+  <%1.upto(39) do |n|%>
+    <%if !u.userweeks.where(:week_id => n).empty?%>
+      <%major_id = u.userweeks.where(:week_id => n).last.major_id%>
+      <%major_name = major_hash[major_id]%>
+      <%if major_id == "major6" or major_id == "major7"%>
+        <br>
+        <%if Userweek.where(:week_id => n).where(:major_id => "major6").count + Userweek.where(:week_id => n).where(:major_id => "major7").count > restriction_hash[major_id].to_i%>
+          <%overlab += 1%>
+          <%= "주차 : #{n}주"%>
+          <Br>
+          <%= "전공명 : #{major_name}"%>
+          <Br>
+          <%= "경쟁자 명단"%>
+          <Br>
+          <%Userweek.where(:week_id => n).where(:major_id => "major6").each do |uw|%>
+            <%= uw.user.name%>
+            <Br>
+          <%end%>
+          <%Userweek.where(:week_id => n).where(:major_id => "major7").each do |uw|%>
+            <%= uw.user.name%>
+            <Br>
+          <%end%>
+          <%= "----------------------------"%>
+          <Br>
+        <%end%>
+      <%else%>
+        <%if Userweek.where(:week_id => n).where(:major_id => major_id).count > restriction_hash[major_id].to_i%>
+          <%overlab += 1%>
+          <%= "이름 : #{u.name}"%>
+          <Br>
+          <%= "주차 : #{n}주"%>
+          <Br>
+          <%= "전공명 : #{major_name}"%>
+          <Br>
+          <%= "경쟁자 명단"%>
+          <Br>
+          <%Userweek.where(:week_id => n).where(:major_id => major_id).each do |uw|%>
+            <%= uw.user.name%>
+            <Br>
+          <%end%>
+          <%= "----------------------------"%>
+          <Br>
+        <%end%>
+      <%end%>
+    <%else%>
+      <%if n != 18%>
+        <%blank += 1%>
+        <span style='color:red'><%= "#{n}주차 일정이 비어있습니다"%></span>
+        <Br>
+      <%end%>
+    <%end%>
+  <%end%>
+  <% if overlab != 0 and blank == 0%>
+    <span style='color:red'><%= "모든 일정이 채워져있고 겹치는 일정이 #{overlab}개가 있습니다" %></span>
+  <% elsif overlab == 0 and blank != 0%>
+    <span style='color:red'><%= "겹치는 일정 없고 비어있는 일정이 #{blank}개가 있습니다" %></span>
+  <% elsif overlab == 0  and blank == 0%>
+    <%= "겹치는 일정이 없고 모든 일정이 채워져있습니다" %>
+  <%end%>
+  ============================================================================
+  <Br>
+  <Br>
+<%end%>

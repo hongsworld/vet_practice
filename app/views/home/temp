@@ -1,0 +1,262 @@
+<% hash_value =  %w[일반외과(2주) 영상의학(2주) 정형외과(2주) 안과(2주) 임상병리(2주) 내과I(2주) 내과II(2주) 피부과(2주) 야생동물(2주) 마취(2주) 대동물(1주) 산과(1주)  외부실습I(2주) 외부실습II(2주) 외부실습III(2주) 외부실습IV(2주) 외부실습V(2주) 1학기방학I(1주) 1학기방학II(1주) 1학기방학III(1주) 2학기방학I(1주) 자기개발(2주)] %>
+<% major_hash = Hash.new%>
+<% 1.upto(22) do |i|%>
+<%   major_hash["major#{i}"] = hash_value[i-1] %>
+<% end %>
+
+<script>
+username= "<%=session[:name]%>"
+</script>
+<script src="/js/timeschedule.js"></script>
+<%start = Date.parse('2014-12-29')%>
+<%last = Date.parse('2015-1-2')%>
+<% 1.upto(39) do |x|%>
+  <% if x!=18%>
+    <% if x== 16 or x==17 or x==21 or x==22 or x==25 or x==26%>
+      <%if @user.userweeks.where(:week_id => x).last.nil?%>
+        <div class = "each_week large_animal" order="<%=x%>">
+      <%else%>
+        <div class = "each_week active" id="<%=@user.userweeks.where(:week_id => x).last.major_id%>" select="true" order="<%=x%>">
+      <%end%>
+      <p class = "week"> <%=x%>주차<br>
+      <span class ="large_animal">대동물실습가능주간</span><br>
+              <%=start%> ~ <%=last%></p>
+
+
+      <li class="dropdown">
+      <%if @user.userweeks.where(:week_id => x).last.nil?%>
+        <a href="#" class="dropdown-toggle button" data-toggle="dropdown" aria-expanded="false">일정선택<span class="caret"></span></a>
+      <%else%>
+        <a href="#" class="dropdown-toggle button" data-toggle="dropdown" aria-expanded="false"><%=major_hash[@user.userweeks.where(:week_id => x).last.major_id]%><span class="caret"></span></a>
+        <script> 
+          $(document).ready( function() {
+              $("." + "<%=@user.userweeks.where(:week_id => x).last.major_id%>").css("display","none")
+          });
+        </script>
+      <%end%>
+        <ul class="dropdown-menu" role="menu">
+          <li class="dropdown-header">교내실습</li>
+          <li class = "major1" size=2 id="major1" ><a href="#">일반외과(2주)</a></li>
+          <li class = "major2" size=2 id="major2" ><a href="#">영상의학(2주)</a></li>
+          <li class = "major3" size=2 id="major3" ><a href="#">정형외과(2주)</a></li>
+          <li class = "major4" size=2 id="major4"><a href="#">안과(2주)</a></li>
+          <li class = "major5" size=2 id="major5"><a href="#">임상병리(2주)</a></li>
+          <li class = "major6" size=2 id="major6"><a href="#">내과I(2주)</a></li>
+          <li class = "major7" size=2 id="major7"><a href="#">내과II(2주)</a></li>
+          <li class = "major8" size=2 id="major8"><a href="#">피부과(2주)</a></li>
+          <li class = "major9" size=2 id="major9"><a href="#">야생동물(2주)</a></li>
+          <li class = "major10" size=2 id="major10"><a href="#">마취(2주)</a></li>
+          <li class = "major11" id="major11"><a href="#">대동물(1주)</a></li>
+          <li class = "major12" id="major12"><a href="#">산과(1주)</a></li>
+          <li class="divider"></li>
+          <li class="dropdown-header">ETC</li>
+          <li class = "major13" size=2 id="major13"><a href="#">외부실습I(2주)</a></li>
+          <li class = "major14" size=2 id="major14"><a href="#">외부실습II(2주)</a></li>
+          <li class = "major15" size=2 id="major15"><a href="#">외부실습III(2주)</a></li>
+          <li class = "major16" size=2 id="major16"><a href="#">외부실습IV(2주)</a></li>
+          <li class = "major17" size=2 id="major17"><a href="#">외부실습V(2주)</a></li>
+          <li class="divider"></li>
+          <li class="dropdown-header">방학</li>
+          <%if x <= 26 %>
+          <li class = "major18" id="major18"><a href="#">1학기방학I(1주)</a></li>
+          <li class = "major19" id="major19"><a href="#">1학기방학II(1주)</a></li>
+          <li class = "major20" id="major20"><a href="#">1학기방학III(1주)</a></li>
+          <%elsif x > 26%>
+          <li class = "major21" id="major21"><a href="#">2학기방학(1주)</a></li>
+          <%end%>
+          <li class = "major22" size=2 id="major22"><a href="#">자기개발(2주)</a></li>
+        </ul>
+      </li>
+
+
+      <% if !@user.userweeks.where(:week_id => x).last.nil?  %>
+      <div class = "classmate_box" style="display:initial;">
+        <div>
+          동시 수강생 목록<br>
+          총 <span id="classmate_number"><%=Userweek.where(:week_id => x).where(:major_id => @user.userweeks.where(:week_id => x).last.major_id).count%></span>명 <br>
+        </div>
+        <div id="classmate_list">
+          <%   Userweek.where(:week_id => x).where(:major_id => @user.userweeks.where(:week_id => x).last.major_id).each do |uw| %>
+            <%=uw.user.name%> /
+          <%end%>
+        </div>
+      </div>
+      <%else%>
+      <div class = "classmate_box">
+        <div>
+          동시 수강생 목록<br>
+          총 <span id="classmate_number">N</span>명 <br>
+        </div>
+        <div id="classmate_list">
+        </div>
+      </div>
+      <%end%>
+
+    </div>
+    <div class = "slide">
+    </div>
+
+    <%else%>
+      <%if @user.userweeks.where(:week_id => x).last.nil?%>
+      <%#이건 그 주에 일정이 없는경우 %>
+        <div class = "each_week" order="<%=x%>">
+      <%else%>
+      <%#이건 그 주에 일정이 있는경우 %>
+        <% if !@user.userweeks.where(:week_id => (x+1) ).last.nil? %>
+          <% if @user.userweeks.where(:week_id => x).last.major_id == @user.userweeks.where(:week_id => (x+1) ).last.major_id %>
+          <%#다음주 일정이 존재하고 / 다음주랑 이번주 일정 같다 => first %>
+            <div class = "each_week active" id="<%=@user.userweeks.where(:week_id => x).last.major_id%>" select="true" first="true" order="<%=x%>">
+          <%end%>
+        <%end%>
+        <% if !@user.userweeks.where(:week_id => (x-1) ).last.nil? %>
+          <% if @user.userweeks.where(:week_id => x).last.major_id == @user.userweeks.where(:week_id => (x-1) ).last.major_id %>
+            <%#저번주 일정이 존재하고/ 저번주랑 이번주 일정 같다 -=> second %>
+            <div class = "each_week active" id="<%=@user.userweeks.where(:week_id => x).last.major_id%>" select="true" second="true" order="<%=x%>" temp="2">
+          <%end%>
+        <% end %>
+        <% if !@user.userweeks.where(:week_id => x).last.nil? and !@user.userweeks.where(:week_id => (x-1)).last.nil? and !@user.userweeks.where(:week_id => (x+1)).last.nil? %>
+          <% if !(@user.userweeks.where(:week_id => x).last.major_id == @user.userweeks.where(:week_id => (x-1) ).last.major_id) and !(@user.userweeks.where(:week_id => x).last.major_id == @user.userweeks.where(:week_id => (x+1) ).last.major_id) %>
+          <%#이번주 일정 다음주 일정이 존재하고 / 이번주랑 저번주 일정 안같고 이번주랑 다음주 일정 안같음. %>
+            <div class = "each_week active" id="<%=@user.userweeks.where(:week_id => x).last.major_id%>" select="true" order="<%=x%>" temp="2">
+          <%end%>
+        <%end%>
+        <% if x==1 and !@user.userweeks.where(:week_id => (x+1)).last.nil? %>
+          <% if !(@user.userweeks.where(:week_id => x).last.major_id == @user.userweeks.where(:week_id => (x+1) ).last.major_id) %>
+            <div class = "each_week active" id="<%=@user.userweeks.where(:week_id => x).last.major_id%>" select="true" order="<%=x%>" temp="2">
+          <%end%>
+        <% elsif x==1 and @user.userweeks.where(:week_id => (x+1)).last.nil? %>
+            <div class = "each_week active" id="<%=@user.userweeks.where(:week_id => x).last.major_id%>" select="true" order="<%=x%>" temp="2">
+        <%end%>
+        <%#예외 처리 어덯게 할것인가? 1번째 주에 1주짜리 있고 2번째 주 비어있으면 문제. 앞 뒤랑 다른경우는 코딩했는데 앞주에 비어있는 경우 / 뒷주에 비어있는 경우 코딩안함%>
+      <%end%>
+      <p class = "week"> <%=x%>주차<br> <%=start%> ~ <%=last%></p>
+      <li class="dropdown">
+
+      <%if @user.userweeks.where(:week_id => x).last.nil?%>
+        <a href="#" class="dropdown-toggle button" data-toggle="dropdown" aria-expanded="false">일정선택<span class="caret"></span></a>
+      <%else%>
+        <a href="#" class="dropdown-toggle button" data-toggle="dropdown" aria-expanded="false"><%=major_hash[@user.userweeks.where(:week_id => x).last.major_id]%><span class="caret"></span></a>
+        <script> 
+          $(document).ready( function() {
+              $("." + "<%=@user.userweeks.where(:week_id => x).last.major_id%>").css("display","none")
+          });
+        </script>
+      <%end%>
+
+      <ul class="dropdown-menu" role="menu">
+        <li class="dropdown-header">교내실습</li>`
+        <li class = "major1" size=2 id="major1" ><a href="#">일반외과(2주)</a></li>
+        <li class = "major2" size=2 id="major2" ><a href="#">영상의학(2주)</a></li>
+        <li class = "major3" size=2 id="major3" ><a href="#">정형외과(2주)</a></li>
+        <li class = "major4" size=2 id="major4"><a href="#">안과(2주)</a></li>
+        <li class = "major5" size=2 id="major5"><a href="#">임상병리(2주)</a></li>
+        <li class = "major6" size=2 id="major6"><a href="#">내과I(2주)</a></li>
+        <li class = "major7" size=2 id="major7"><a href="#">내과II(2주)</a></li>
+        <li class = "major8" size=2 id="major8"><a href="#">피부과(2주)</a></li>
+        <li class = "major9" size=2 id="major9"><a href="#">야생동물(2주)</a></li>
+        <li class = "major10" size=2 id="major10"><a href="#">마취(2주)</a></li>
+        <li class = "major12" id="major12"><a href="#">산과(1주)</a></li>
+        <li class="divider"></li>
+        <li class="dropdown-header">ETC</li>`
+        <li class = "major13" size=2 id="major13"><a href="#">외부실습I(2주)</a></li>
+        <li class = "major14" size=2 id="major14"><a href="#">외부실습II(2주)</a></li>
+        <li class = "major15" size=2 id="major15"><a href="#">외부실습III(2주)</a></li>
+        <li class = "major16" size=2 id="major16"><a href="#">외부실습IV(2주)</a></li>
+        <li class = "major17" size=2 id="major17"><a href="#">외부실습V(2주)</a></li>
+        <li class="divider"></li>
+        <li class="dropdown-header">방학</li>
+        <%if x <= 26 %>
+        <li class = "major18" id="major18"><a href="#">1학기방학I(1주)</a></li>
+        <li class = "major19" id="major19"><a href="#">1학기방학II(1주)</a></li>
+        <li class = "major20" id="major20"><a href="#">1학기방학III(1주)</a></li>
+        <%elsif x > 26%>
+        <li class = "major21" id="major21"><a href="#">2학기방학(1주)</a></li>
+        <%end%>
+        <li class = "major22" size=2 id="major22"><a href="#">자기개발(2주)</a></li>
+      </ul>
+      </li>
+      <% if !@user.userweeks.where(:week_id => x).last.nil?  %>
+      <div class = "classmate_box" style="display:initial;">
+        <div>
+          동시 수강생 목록<br>
+          총 <span id="classmate_number"><%=Userweek.where(:week_id => x).where(:major_id => @user.userweeks.where(:week_id => x).last.major_id).count%></span>명 <br>
+        </div>
+        <div id="classmate_list">
+          <%   Userweek.where(:week_id => x).where(:major_id => @user.userweeks.where(:week_id => x).last.major_id).each do |uw| %>
+            <%=uw.user.name%> / 
+          <%end%>
+        </div>
+      </div>
+      <%else%>
+      <div class = "classmate_box">
+        <div>
+          동시 수강생 목록<br>
+          총 <span id="classmate_number">N</span>명 <br>
+        </div>
+        <div id="classmate_list">
+        </div>
+      </div>
+      <%end%>
+    </div>
+
+    <div class = "slide">
+    </div>
+    <%end%>
+  <%else%>
+    <div class = "each_week active" id="travel" order="<%=x%>">
+      <p class = "week"> <%=x%>주차<br> <%=start%> ~ <%=last%></p>
+      <li class="dropdown">
+        <a  class="dropdown-toggle">졸업여행주간(고정)</span></a>
+      </li>
+    </div>
+    <div class = "slide">
+    </div>
+
+  <%end%>
+  <%start+=7%>
+  <%last+=7%>
+<%end%>
+<style>
+div.classmate_box{
+  display:none;
+}
+.each_week{
+  background-color:#d1cdcc;
+  border-radius:5px;
+}
+div.large_animal{
+  background-color:#FF3300 !important;
+}
+.slide{
+  height:10px;
+  width:10px;
+}
+div.active{
+  background:#04538B;
+}
+ul.inactive{
+  display:none !important;
+}
+ul.active{
+  display:block !important;
+}
+a.button{
+  font: bold 30px Arial;
+  text-decoration: none;
+  background-color: #EEEEEE;
+  color: #333333;
+  padding: 2px 6px 2px 6px;
+  border-top: 1px solid #CCCCCC;
+  border-right: 1px solid #333333;
+  border-bottom: 1px solid #333333;
+  border-left: 1px solid #CCCCCC;
+  border-radius:10px;
+}
+div#classmate{
+  padding:10px;
+}
+li.dropdown{
+  list-style:none;
+}
+</style>
+

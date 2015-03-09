@@ -1,0 +1,65 @@
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<style>
+body{
+  background-color:initial !important;
+}
+</style>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+
+  <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+  <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap-theme.min.css">
+  <link href="http://getbootstrap.com/examples/cover/cover.css" rel="stylesheet">
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+
+<link rel="icon" href="http://getbootstrap.com/favicon.ico">
+<link href="http://getbootstrap.com/examples/signin/signin.css" rel="stylesheet">
+<script src="http://getbootstrap.com/assets/js/ie-emulation-modes-warning.js"></script>
+
+<div class="container">
+  
+  <form class="form-signin" role="form" action="/home/login_process">
+    <h2 class="form-signin-heading">실습예비수강신청</h2>
+    <img class = "logo_opacity" src="/img/logo.png">
+    <style>
+img.logo_opacity{
+/* approximately a 33% opacity on blue */
+filter: progid:DXImageTransform.Microsoft.gradient(
+  startColorstr=#550000FF, endColorstr=#550000FF
+);
+
+/* IE8 uses -ms-filter for whatever reason... */
+-ms-filter: progid:DXImageTransform.Microsoft.gradient(
+  startColorstr=#550000FF, endColorstr=#550000FF
+);
+/* mozilla example - FF3.6+ */
+background-image: -moz-linear-gradient(
+  rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0) 95%
+);
+/* webkit example */
+background-image: -webkit-gradient(
+  linear, left top, left bottom, from(rgba(50,50,50,0.8)),
+  to(rgba(80,80,80,0.2)), color-stop(.5,#333333)
+);
+border-radius:1000px;
+}
+    </style>
+    <input type="text" class="form-control" name="name"placeholder="이름을 입력하세요" required autofocus>
+    <input type="password" class="form-control" name="password" placeholder="Password" required>
+    <div class="checkbox">
+    <!--
+      <label>
+        <input type="checkbox" value="remember-me">자동로인그
+      </label>
+      -->
+    </div>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">로그인</button>
+  </form>
+
+</div> <!-- /container -->
+
+
+
+<script src="http://getbootstrap.com/assets/js/ie10-viewport-bug-workaround.js"></script>
